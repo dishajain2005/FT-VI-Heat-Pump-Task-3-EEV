@@ -40,7 +40,7 @@ plt.rcParams.update({
 def save_csv(name, rows, keys=None):
     keys = keys or [k for k in rows[0].keys() if not isinstance(rows[0][k], (dict, list))]
     with open(os.path.join(RES, name), "w", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=keys, extrasaction="ignore")
+        w = csv.DictWriter(f, fieldnames=keys, extrasaction="ignore", lineterminator="\n")
         w.writeheader()
         for r in rows:
             w.writerow({k: (round(v, 6) if isinstance(v, float) else v) for k, v in r.items() if k in keys})
@@ -110,7 +110,7 @@ st = [("1", "Suction", D["P_evap"], D["T1"], D["h1"], "SH vapour"),
       ("8", "Tank outlet to EEV-2", D["P_FT"], D["T_FT"], D["h8"], f"x = {D['x8']:.3f}"),
       ("9", "Evaporator inlet", D["P_evap"], props.Tsat(D["P_evap"]), D["h9"], f"x = {D['x9']:.3f}")]
 with open(os.path.join(RES, "T3_state_table_phi50.csv"), "w", newline="") as f:
-    w = csv.writer(f); w.writerow(["state", "description", "P_MPa", "T_C", "h_kJkg", "phase"])
+    w = csv.writer(f, lineterminator="\n"); w.writerow(["state", "description", "P_MPa", "T_C", "h_kJkg", "phase"])
     for r in st: w.writerow([r[0], r[1], round(r[2], 4), round(r[3], 2), round(r[4], 2), r[5]])
 R["state_table"] = st
 
